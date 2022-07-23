@@ -16,20 +16,19 @@ function drawShip(s, ctx){
    ctx.lineTo(p3.x, p3.y)
    ctx.closePath()
    ctx.fill()
-   
+
+   ctx.fillRect(p2.x + s.side/3, p2.y, s.side/3, 4)
+
    if(s.thrust){
       ctx.fillStyle = "red"
       ctx.beginPath()
-      ctx.moveTo(p1.x, p2.y+s.side /3)
-      ctx.lineTo(p2.x + s.side/3, p2.y)
-      ctx.lineTo(p3.x - s.side/3, p2.y)
+      ctx.moveTo(p1.x, p2.y+s.side /3 +5)
+      ctx.lineTo(p2.x + s.side/3, p2.y +5)
+      ctx.lineTo(p3.x - s.side/3, p2.y +5)
       ctx.closePath()
       ctx.fill()
    }
-
    ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-   
 }
 
 /**
