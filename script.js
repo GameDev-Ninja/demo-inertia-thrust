@@ -5,10 +5,12 @@ const ship = {
     x: 0,
     y: 0,
     a: 0,
+    side: 30,
     xSpeed: 0,
     ySpeed: 0,
     thrust: false,
-    side: 30,
+    thrustPower: 10,
+    aSpeed: 5,
 }
 
 let scr = {}
@@ -28,11 +30,30 @@ function LoadGame(canvas, ctx) {
  * Exécutée perpétuellement pour mettre à jour les données
  */
 function UpdateGame(deltaTime) {
-    if(isKeyDown("ArrowLeft")) ship.a -= 1
-    else if(isKeyDown("ArrowRight")) ship.a += 1
+    // Prise en compte des touches
+    if(isKeyDown("ArrowLeft")) ship.a -= ship.aSpeed
+    else if(isKeyDown("ArrowRight")) ship.a += ship.aSpeed
 
     if(isKeyDown("ArrowUp")) ship.thrust = true
     else ship.thrust = false
+
+    // Prise en compte de la poussée
+    if(ship.thrust){
+        let a = ship.a * Math.PI / 180 // Degrés -> Radians
+        ship.xSpeed += Math.sin(a) * ship.thrustPower
+        ship.ySpeed -= Math.cos(a) * ship.thrustPower
+    }
+
+    // Déplacement vaisseau
+    ship.x += ship.xSpeed * deltaTime
+    ship.y += ship.ySpeed * deltaTime
+    
+    // Bouclage des déplacements
+    if(ship.x < -ship.side) ship.x = scr.width + ship.side
+    else if (ship.x > scr.width + ship.side) ship.x = -ship.side
+
+    if(ship.y < -ship.side) ship.y = scr.height + ship.side
+    else if (ship.y > scr.height + ship.side) ship.y = -ship.side
 }
 
 /**
