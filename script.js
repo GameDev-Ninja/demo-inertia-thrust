@@ -15,6 +15,9 @@ const ship = {
 
 let scr = {}
 
+// Pour un ciel étoilé
+let stars = new Array(randomNumber(25,100))
+
 /**
  * Exécutée une seule fois, au chargement
  */
@@ -24,6 +27,15 @@ function LoadGame(canvas, ctx) {
 
     ship.x = scr.width /2
     ship.y = scr.height /2
+
+    // créée des étoiles
+    stars.fill(0)
+    stars = stars.map(e => {
+        return {
+            x: randomNumber(0, scr.width), 
+            y: randomNumber(0, scr.height-25)
+        }
+    })
 }
 
 /**
@@ -60,5 +72,10 @@ function UpdateGame(deltaTime) {
  * Exécutée perpétuellement pour dessiner la frame actuelle
  */
 function DrawGame(ctx) {
+    // Ciel étoilé scintillant !
+    stars.forEach(e => {
+        ctx.drawCircle(e, randomNumber(1,2))
+    })
+    
     drawShip(ship, ctx)
 }
