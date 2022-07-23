@@ -104,7 +104,7 @@ function drawInfos(ctx){
     let yAcc = Math.round(ship.yAcc * 1000)/1000
     
     ctx.fillText(
-        `x.speed = ${xSpeed} px/s | y.speed = ${ySpeed} px/s | xAccel. = ${xAcc} px/s² | yAccel. = ${yAcc} px/s² `,
+        `x.speed = ${xSpeed} px/s | y.speed = ${ySpeed} px/s | xAccel. = ${xAcc} px/s² | yAccel. = ${yAcc} px/s² | angle = ${ship.a}°`,
         25,
         scr.height-20
     )
