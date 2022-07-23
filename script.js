@@ -1,39 +1,43 @@
 /**
  * Données initiales du jeu
  */
-
-/** Chargement et positionnement du logo Game-Dev.Ninja */
-let logo = {
-    image: new Image(),
+const ship = {
     x: 0,
-    y: 0
+    y: 0,
+    a: 0,
+    xSpeed: 0,
+    ySpeed: 0,
+    thrust: false,
+    side: 30,
 }
-logo.image.onload = function() {
-    logo.x = (canvas.width - logo.image.naturalWidth) / 2
-    logo.y = (canvas.height - logo.image.naturalHeight) / 2
-}
-logo.image.src = './assets/images/logo.png'
-/** Fin du chargement et positionnement du logo Game-Dev.Ninja */
 
+let scr = {}
 
 /**
  * Exécutée une seule fois, au chargement
  */
-function LoadGame(canvas, context) {
+function LoadGame(canvas, ctx) {
+    scr.width = canvas.width
+    scr.height = canvas.height
 
+    ship.x = scr.width /2
+    ship.y = scr.height /2
 }
 
 /**
  * Exécutée perpétuellement pour mettre à jour les données
  */
 function UpdateGame(deltaTime) {
+    if(isKeyDown("ArrowLeft")) ship.a -= 1
+    else if(isKeyDown("ArrowRight")) ship.a += 1
 
+    if(isKeyDown("ArrowUp")) ship.thrust = true
+    else ship.thrust = false
 }
 
 /**
  * Exécutée perpétuellement pour dessiner la frame actuelle
  */
-function DrawGame(context) {
-    // Affichage du logo Game-Dev.Ninja
-    context.drawImage(logo.image, 0, 0, logo.image.naturalWidth, logo.image.naturalHeight, logo.x, logo.y, logo.image.naturalWidth, logo.image.naturalHeight)
+function DrawGame(ctx) {
+    drawShip(ship, ctx)
 }
