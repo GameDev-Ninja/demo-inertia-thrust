@@ -8,8 +8,10 @@ const ship = {
     side: 30,
     xSpeed: 0,
     ySpeed: 0,
+    xAcc: 0,
+    yAcc: 0,
     thrust: false,
-    thrustPower: 10,
+    thrustPower: 100,
     aSpeed: 5,
 }
 
@@ -52,13 +54,19 @@ function UpdateGame(deltaTime) {
     // Prise en compte de la poussée
     if(ship.thrust){
         let a = ship.a * Math.PI / 180 // Degrés -> Radians
-        ship.xSpeed += Math.sin(a) * ship.thrustPower
-        ship.ySpeed -= Math.cos(a) * ship.thrustPower
+        ship.xAcc = Math.sin(a) * ship.thrustPower * deltaTime
+        ship.yAcc = Math.cos(a) * ship.thrustPower * deltaTime
+        ship.xSpeed += ship.xAcc
+        ship.ySpeed += ship.yAcc
+    }
+    else{
+        ship.xAcc = 0
+        ship.yAcc = 0
     }
 
     // Déplacement vaisseau
     ship.x += ship.xSpeed * deltaTime
-    ship.y += ship.ySpeed * deltaTime
+    ship.y -= ship.ySpeed * deltaTime
     
     // Bouclage des déplacements
     if(ship.x < -ship.side) ship.x = scr.width + ship.side
@@ -76,6 +84,27 @@ function DrawGame(ctx) {
     stars.forEach(e => {
         ctx.drawCircle(e, randomNumber(1,2))
     })
-    
+
     drawShip(ship, ctx)
+    drawInfos(ctx)
+}
+
+function drawInfos(ctx){
+    ctx.fillStyle = "MidnightBlue"
+    ctx.fillRect(0,scr.height-30,scr.width, 30)
+
+    ctx.fillStyle = "white"
+    ctx.font = "15px sans"
+    ctx.textBaseline = 'top';
+
+    let xSpeed = Math.round(ship.xSpeed)
+    let ySpeed = Math.round(ship.ySpeed)
+    let xAcc = Math.round(ship.xAcc * 1000)/1000
+    let yAcc = Math.round(ship.yAcc * 1000)/1000
+    
+    ctx.fillText(
+        `x.speed = ${xSpeed} px/s | y.speed = ${ySpeed} px/s | xAccel. = ${xAcc} px/s² | yAccel. = ${yAcc} px/s² `,
+        25,
+        scr.height-20
+    )
 }
