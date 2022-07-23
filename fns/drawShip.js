@@ -1,9 +1,9 @@
 /**
- * Draw the ship at the correct angle and position
+ * Dessine le vaisseau à la bonne position et au bon angle
  * @param {*} s The ship
  * @param {*} ctx 
  */
-function drawShip(s, ctx){
+function drawShip(s, ctx, clone = {x: false, y:false}){
    let [p1,p2,p3] = eqTriangleFromCenter(0, 0, s.side)
    ctx.fillStyle = "white"
 
@@ -22,6 +22,27 @@ function drawShip(s, ctx){
       ])
    }
    ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+   if(!clone.x && s.x < s.side){
+      let sClone = JSON.parse(JSON.stringify(s))
+      sClone.x += scr.width
+      drawShip(sClone, ctx, {x:true, y: clone.y})
+   }
+   else if(!clone.x && s.x > scr.width - s.side){
+      let sClone = JSON.parse(JSON.stringify(s))
+      sClone.x -= scr.width
+      drawShip(sClone, ctx, {x: true, y: clone.y})
+   }
+   if(!clone.y && s.y < s.side){
+      let sClone = JSON.parse(JSON.stringify(s))
+      sClone.y += scr.height - 30
+      drawShip(sClone, ctx, {x: clone.x, y: true})
+   }
+   else if(!clone.y && s.y > scr.height - 30 - s.side){
+      let sClone = JSON.parse(JSON.stringify(s))
+      sClone.y -= scr.height - 30
+      drawShip(sClone, ctx, {x: clone.x, y: true})
+   }
 }
 
 /**

@@ -48,8 +48,7 @@ function UpdateGame(deltaTime) {
     if(isKeyDown("ArrowLeft")) ship.a -= ship.aSpeed
     else if(isKeyDown("ArrowRight")) ship.a += ship.aSpeed
 
-    if(isKeyDown("ArrowUp")) ship.thrust = true
-    else ship.thrust = false
+    ship.thrust = isKeyDown("ArrowUp")
 
     // Prise en compte de la poussée
     if(ship.thrust){
@@ -69,11 +68,11 @@ function UpdateGame(deltaTime) {
     ship.y -= ship.ySpeed * deltaTime
     
     // Bouclage des déplacements
-    if(ship.x < -ship.side) ship.x = scr.width + ship.side
-    else if (ship.x > scr.width + ship.side) ship.x = -ship.side
+    if(ship.x < -ship.side) ship.x = scr.width - ship.side
+    else if (ship.x > scr.width + ship.side) ship.x = ship.side
 
-    if(ship.y < -ship.side) ship.y = scr.height + ship.side
-    else if (ship.y > scr.height + ship.side) ship.y = -ship.side
+    if(ship.y < -ship.side) ship.y = scr.height - 30 - ship.side
+    else if (ship.y > scr.height - 30 + ship.side ) ship.y = ship.side
 }
 
 /**
@@ -88,7 +87,9 @@ function DrawGame(ctx) {
     drawShip(ship, ctx)
     drawInfos(ctx)
 }
-
+/**
+ * Affiche les paramètres de vitesse et accélération
+ */
 function drawInfos(ctx){
     ctx.fillStyle = "MidnightBlue"
     ctx.fillRect(0,scr.height-30,scr.width, 30)
